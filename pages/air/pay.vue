@@ -27,7 +27,24 @@
 
 <script>
 export default {
-    
+    mounted(){
+        // 这个处理方法是有缺陷的，不100%准确
+        //userInfo在页面加载完才赋值
+        setTimeout(v=>{
+            const {id} = this.$route.query;
+            const {user:{userInfo}} = this.$store.state;
+         
+            //请求二维码
+            this.$axios({
+                url:`airorders/${id}`,
+                headers:{
+                    Authorization: `Bearer ${userInfo.token}`
+                }
+            }).then(res=>{
+                console.log(res)
+            })
+        },200)
+    }
 }
 </script>
 

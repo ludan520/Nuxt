@@ -137,6 +137,7 @@ export default {
           tel: this.contactPhone
         }
       }).then(res => {
+
         const { code } = res.data;
         this.$confirm(`模拟手机验证码为：${code}`, "提示", {
           confirmButtonText: "确定",
@@ -157,7 +158,6 @@ export default {
             seat_xid: this.data.seat_infos.seat_xid,
             air: this.data.id
         };
-
         const {
             user: { userInfo }
         } = this.$store.state;
@@ -172,14 +172,21 @@ export default {
             method: "POST",
             data: orderData,
             headers: {
-            Authorization: `Bearer ${userInfo.token || "NO TOKEN"}`
+                Authorization: `Bearer ${userInfo.token || 'NO TOKEN'}`
             }
         })
             .then(res => {
+              // console.log(res);
+              //获取提交订单后返回的订单id
+              const {id} =res.data.data
+  
             // 跳转到付款页
             this.$router.push({
-                path: "/air/pay"
-            });
+                  path: "/air/pay",
+                  query:{
+                    id,
+                  }
+              });
             })
             .catch(err => {
             const { message } = err.response.data;
